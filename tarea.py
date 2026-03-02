@@ -1,6 +1,3 @@
-# =========================
-# CLASE BASE
-# =========================
 
 class Conjun:
 
@@ -33,9 +30,6 @@ class Conjun:
         return f"Nombre: {self._nombre}, Cedula: {self._cedula}, Genero: {self._genero}"
 
 
-# =========================
-# CLASE PACIENTE
-# =========================
 
 class Paciente(Conjun):
 
@@ -55,9 +49,6 @@ class Paciente(Conjun):
         return f"{super().__str__()}, Servicio: {self._servicio}"
 
 
-# =========================
-# CLASE SISTEMA HOSPITAL
-# =========================
 
 class SistemaHospital:
 
@@ -119,7 +110,7 @@ def main():
 
     while True:
 
-        print("\n--- SISTEMA HOSPITAL ---")
+        print("\n-------- SISTEMA HOSPITAL --------")
         print("1. Ingresar paciente nuevo")
         print("2. Ver datos de paciente")
         print("3. Ver número de pacientes")
@@ -181,9 +172,5 @@ def main():
         else:
             print("Opcion invalida")
 
-
-# =========================
-# EJECUTAR PROGRAMA
-# =========================
 
 main()
