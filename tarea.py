@@ -1,4 +1,3 @@
-
 class Conjun:
 
     def __init__(self, nombre, cedula, genero):
@@ -6,7 +5,6 @@ class Conjun:
         self._cedula = cedula
         self._genero = genero
 
-    # GETTERS
     def get_nombre(self):
         return self._nombre
 
@@ -16,7 +14,6 @@ class Conjun:
     def get_genero(self):
         return self._genero
 
-    # SETTERS
     def set_nombre(self, nombre):
         self._nombre = nombre
 
@@ -27,8 +24,7 @@ class Conjun:
         self._genero = genero
 
     def __str__(self):
-        return f"Nombre: {self._nombre}, Cedula: {self._cedula}, Genero: {self._genero}"
-
+        return f"El nombre es: {self._nombre}, con cedula: {self._cedula} y Genero: {self._genero}"
 
 
 class Paciente(Conjun):
@@ -37,11 +33,9 @@ class Paciente(Conjun):
         super().__init__(nombre, cedula, genero)
         self._servicio = servicio
 
-    # GETTER
     def get_servicio(self):
         return self._servicio
 
-    # SETTER
     def set_servicio(self, servicio):
         self._servicio = servicio
 
@@ -49,77 +43,119 @@ class Paciente(Conjun):
         return f"{super().__str__()}, Servicio: {self._servicio}"
 
 
+class Enfermera(Conjun):
 
-class SistemaHospital:
+    def __init__(self, nombre, cedula, genero, turno, rango):
+        super().__init__(nombre, cedula, genero)
+        self._turno = turno
+        self._rango = rango
+
+    def get_turno(self):
+        return self._turno
+
+    def get_rango(self):
+        return self._rango
+
+    def set_turno(self, turno):
+        self._turno = turno
+
+    def set_rango(self, rango):
+        self._rango = rango
+
+    def __str__(self):
+        return f"{super().__str__()}, Turno: {self._turno}, Rango: {self._rango}"
+
+
+class Medico(Conjun):
+
+    def __init__(self, nombre, cedula, genero, turno, especialidad):
+        super().__init__(nombre, cedula, genero)
+        self._turno = turno
+        self._especialidad = especialidad
+
+    def get_turno(self):
+        return self._turno
+
+    def get_especialidad(self):
+        return self._especialidad
+
+    def set_turno(self, turno):
+        self._turno = turno
+
+    def set_especialidad(self, especialidad):
+        self._especialidad = especialidad
+
+    def __str__(self):
+        return f"{super().__str__()}, Turno: {self._turno}, Especialidad: {self._especialidad}"
+
+
+class Hospital:
 
     def __init__(self):
-        self._pacientes = []
+        self.pacientes = []
+        self.enfermeras = []
+        self.medicos = []
 
-    # Verificar si existe paciente
-    def existe_paciente(self, cedula):
-
-        for paciente in self._pacientes:
-            if paciente.get_cedula() == cedula:
-                return True
-
-        return False
-
-
-    # Agregar paciente
     def agregar_paciente(self, paciente):
 
-        if self.existe_paciente(paciente.get_cedula()):
-            return False
+        for p in self.pacientes:
+            if p.get_cedula() == paciente.get_cedula():
+                return False
 
-        self._pacientes.append(paciente)
+        self.pacientes.append(paciente)
         return True
 
 
-    # Buscar paciente
-    def buscar_paciente(self, cedula):
+    def agregar_enfermera(self, enfermera):
+        self.enfermeras.append(enfermera)
 
-        for paciente in self._pacientes:
+    def agregar_medico(self, medico):
+        self.medicos.append(medico)
+
+    def buscar_paciente_por_cedula(self, cedula):
+        for paciente in self.pacientes:
             if paciente.get_cedula() == cedula:
                 return paciente
-
         return None
 
+    def numero_pacientes(self):
+        return len(self.pacientes)
 
-    # Cantidad de pacientes
-    def cantidad_pacientes(self):
-        return len(self._pacientes)
+    def numero_enfermeras(self):
+        return len(self.enfermeras)
 
+    def numero_medicos(self):
+        return len(self.medicos)
 
-    # Mostrar todos
-    def mostrar_pacientes(self):
+    def almacenar_todo(self):
 
-        if len(self._pacientes) == 0:
-            print("No hay pacientes registrados")
-        else:
-            for paciente in self._pacientes:
-                print(paciente)
+        print("- PACIENTES -")
+        for p in self.pacientes:
+            print(p)
 
+        print("\n- ENFERMERAS -")
+        for e in self.enfermeras:
+            print(e)
 
-# =========================
-# FUNCION PRINCIPAL
-# =========================
+        print("\n-MEDICOS -")
+        for m in self.medicos:
+            print(m)
+
 
 def main():
 
-    sistema = SistemaHospital()
+    sistema = Hospital()
 
     while True:
 
-        print("\n-------- SISTEMA HOSPITAL --------")
+        print("\n---- SISTEMA HOSPITAL ----")
         print("1. Ingresar paciente nuevo")
-        print("2. Ver datos de paciente")
-        print("3. Ver número de pacientes")
-        print("4. Ver todos los pacientes")
-        print("5. Salir")
+        print("2. Ver datos de paciente existente")
+        print("3. Ver numero de pacientes")
+        print("4. Salir")
 
         opcion = input("Seleccione una opcion: ")
 
-        # OPCION 1
         if opcion == "1":
 
             nombre = input("Ingrese nombre: ")
@@ -130,46 +166,38 @@ def main():
             paciente = Paciente(nombre, cedula, genero, servicio)
 
             if sistema.agregar_paciente(paciente):
-                print("Paciente agregado correctamente")
+                print("Paciente agregado correctamente al sistema")
             else:
                 print("Error: ya existe un paciente con esa cedula")
 
 
-        # OPCION 2
         elif opcion == "2":
 
-            cedula = input("Ingrese la cedula: ")
+            cedula = input("Ingrese la cedula del paciente: ")
 
-            paciente = sistema.buscar_paciente(cedula)
+            paciente = sistema.buscar_paciente_por_cedula(cedula)
 
             if paciente != None:
                 print("\nPaciente encontrado:")
                 print(paciente)
             else:
-                print("Paciente no existe")
+                print("El paciente no existe")
 
 
-        # OPCION 3
         elif opcion == "3":
 
-            print("Cantidad de pacientes:",
-                  sistema.cantidad_pacientes())
+            print("Numero de pacientes:", sistema.numero_pacientes())
 
 
-        # OPCION 4
         elif opcion == "4":
 
-            sistema.mostrar_pacientes()
-
-
-        # OPCION 5
-        elif opcion == "5":
-
-            print("Gracias por usar el sistema")
+            print("Gracias por usar el sistema, saliendo...")
             break
-
 
         else:
             print("Opcion invalida")
 
+
 main()
+
+
